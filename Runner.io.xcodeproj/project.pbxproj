@@ -14,6 +14,15 @@
 		FAE185C02D9766BD00C7CC50 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185BF2D9766BD00C7CC50 /* LocationService.swift */; };
 		FAE185C22D97692900C7CC50 /* PolygonMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185C12D97692900C7CC50 /* PolygonMapView.swift */; };
 		FAE185C52D976BFB00C7CC50 /* PolygonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185C42D976BFB00C7CC50 /* PolygonHelper.swift */; };
+		FAE185C72D985C3100C7CC50 /* RunDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185C62D985C3100C7CC50 /* RunDashboardView.swift */; };
+		FAE185C92D989E1600C7CC50 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185C82D989E1600C7CC50 /* FirestoreManager.swift */; };
+		FAE185CB2D989EC900C7CC50 /* SaveRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185CA2D989EC900C7CC50 /* SaveRunView.swift */; };
+		FAE185CE2D98A95E00C7CC50 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185CD2D98A95E00C7CC50 /* ProfileHeaderView.swift */; };
+		FAE185D02D98A97C00C7CC50 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185CF2D98A97C00C7CC50 /* UserInfoView.swift */; };
+		FAE185D22D98A99A00C7CC50 /* SavedRunsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185D12D98A99A00C7CC50 /* SavedRunsView.swift */; };
+		FAE185D42D98A9B500C7CC50 /* RunRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185D32D98A9B500C7CC50 /* RunRowView.swift */; };
+		FAE185D62D98A9D000C7CC50 /* SignOutButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185D52D98A9D000C7CC50 /* SignOutButtonView.swift */; };
+		FAE185D82D98ABE400C7CC50 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185D72D98ABE400C7CC50 /* ProfileViewModel.swift */; };
 		FAF37BD02D3DA3EC0078F8ED /* Runner_ioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF37BCF2D3DA3EC0078F8ED /* Runner_ioApp.swift */; };
 		FAF37BD22D3DA3EC0078F8ED /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF37BD12D3DA3EC0078F8ED /* MainView.swift */; };
 		FAF37BD42D3DA3ED0078F8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAF37BD32D3DA3ED0078F8ED /* Assets.xcassets */; };
@@ -46,6 +55,15 @@
 		FAE185BF2D9766BD00C7CC50 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		FAE185C12D97692900C7CC50 /* PolygonMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonMapView.swift; sourceTree = "<group>"; };
 		FAE185C42D976BFB00C7CC50 /* PolygonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonHelper.swift; sourceTree = "<group>"; };
+		FAE185C62D985C3100C7CC50 /* RunDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunDashboardView.swift; sourceTree = "<group>"; };
+		FAE185C82D989E1600C7CC50 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		FAE185CA2D989EC900C7CC50 /* SaveRunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRunView.swift; sourceTree = "<group>"; };
+		FAE185CD2D98A95E00C7CC50 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		FAE185CF2D98A97C00C7CC50 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		FAE185D12D98A99A00C7CC50 /* SavedRunsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedRunsView.swift; sourceTree = "<group>"; };
+		FAE185D32D98A9B500C7CC50 /* RunRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRowView.swift; sourceTree = "<group>"; };
+		FAE185D52D98A9D000C7CC50 /* SignOutButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutButtonView.swift; sourceTree = "<group>"; };
+		FAE185D72D98ABE400C7CC50 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		FAF37BCC2D3DA3EC0078F8ED /* Runner.io.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.io.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF37BCF2D3DA3EC0078F8ED /* Runner_ioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runner_ioApp.swift; sourceTree = "<group>"; };
 		FAF37BD12D3DA3EC0078F8ED /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -89,6 +107,19 @@
 				FAE185C42D976BFB00C7CC50 /* PolygonHelper.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		FAE185CC2D98A63C00C7CC50 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				FAF37BF92D3DBB950078F8ED /* ProfileView.swift */,
+				FAE185CD2D98A95E00C7CC50 /* ProfileHeaderView.swift */,
+				FAE185CF2D98A97C00C7CC50 /* UserInfoView.swift */,
+				FAE185D12D98A99A00C7CC50 /* SavedRunsView.swift */,
+				FAE185D32D98A9B500C7CC50 /* RunRowView.swift */,
+				FAE185D52D98A9D000C7CC50 /* SignOutButtonView.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		FAF37BC32D3DA3EC0078F8ED = {
@@ -153,13 +184,15 @@
 		FAF37BE12D3DA5030078F8ED /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FAE185CC2D98A63C00C7CC50 /* Profile */,
 				FAF37BD12D3DA3EC0078F8ED /* MainView.swift */,
 				FAF37BF52D3DBB5E0078F8ED /* LoginView.swift */,
 				FAF37BF72D3DBB840078F8ED /* MapView.swift */,
-				FAF37BF92D3DBB950078F8ED /* ProfileView.swift */,
 				FAE185B72D97638200C7CC50 /* MapTrackingView.swift */,
 				FAE185B92D97639400C7CC50 /* MapRouteView.swift */,
 				FAE185C12D97692900C7CC50 /* PolygonMapView.swift */,
+				FAE185C62D985C3100C7CC50 /* RunDashboardView.swift */,
+				FAE185CA2D989EC900C7CC50 /* SaveRunView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -170,6 +203,7 @@
 				FAF37BF32D3DBB240078F8ED /* MainViewViewModel.swift */,
 				FAF37C042D4AF4BB0078F8ED /* AuthViewModel.swift */,
 				FAE185BB2D9763B600C7CC50 /* LocationManager.swift */,
+				FAE185D72D98ABE400C7CC50 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -180,6 +214,7 @@
 				FAF37C062D4AF4D20078F8ED /* AuthService.swift */,
 				FAF37C082D4AF4F90078F8ED /* GoogleSignInService.swift */,
 				FAE185BF2D9766BD00C7CC50 /* LocationService.swift */,
+				FAE185C82D989E1600C7CC50 /* FirestoreManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -271,14 +306,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAE185C22D97692900C7CC50 /* PolygonMapView.swift in Sources */,
+				FAE185C72D985C3100C7CC50 /* RunDashboardView.swift in Sources */,
 				FAF37BD22D3DA3EC0078F8ED /* MainView.swift in Sources */,
+				FAE185D42D98A9B500C7CC50 /* RunRowView.swift in Sources */,
 				FAE185BA2D97639400C7CC50 /* MapRouteView.swift in Sources */,
+				FAE185CE2D98A95E00C7CC50 /* ProfileHeaderView.swift in Sources */,
 				FAF37BD02D3DA3EC0078F8ED /* Runner_ioApp.swift in Sources */,
 				FAF37BF82D3DBB840078F8ED /* MapView.swift in Sources */,
 				FAE185B82D97638200C7CC50 /* MapTrackingView.swift in Sources */,
 				FAE185BE2D9763E200C7CC50 /* Route.swift in Sources */,
+				FAE185D82D98ABE400C7CC50 /* ProfileViewModel.swift in Sources */,
+				FAE185D02D98A97C00C7CC50 /* UserInfoView.swift in Sources */,
+				FAE185D62D98A9D000C7CC50 /* SignOutButtonView.swift in Sources */,
+				FAE185C92D989E1600C7CC50 /* FirestoreManager.swift in Sources */,
 				FAF37C052D4AF4BB0078F8ED /* AuthViewModel.swift in Sources */,
 				FAE185C02D9766BD00C7CC50 /* LocationService.swift in Sources */,
+				FAE185CB2D989EC900C7CC50 /* SaveRunView.swift in Sources */,
 				FAF37BF62D3DBB5E0078F8ED /* LoginView.swift in Sources */,
 				FAF37C092D4AF4F90078F8ED /* GoogleSignInService.swift in Sources */,
 				FAF37BFA2D3DBB950078F8ED /* ProfileView.swift in Sources */,
@@ -286,6 +329,7 @@
 				FAF37C0B2D4AF5070078F8ED /* User.swift in Sources */,
 				FAE185C52D976BFB00C7CC50 /* PolygonHelper.swift in Sources */,
 				FAF37C072D4AF4D20078F8ED /* AuthService.swift in Sources */,
+				FAE185D22D98A99A00C7CC50 /* SavedRunsView.swift in Sources */,
 				FAE185BC2D9763B600C7CC50 /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

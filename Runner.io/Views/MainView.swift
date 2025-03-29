@@ -10,6 +10,11 @@ import SwiftUI
 struct MainView: View {
     @StateObject var viewModel = MainViewViewModel()
     
+    init() {
+        UITabBar.appearance().backgroundColor = UIColor.white
+        UITabBar.appearance().isTranslucent = true
+    }
+    
     var body: some View {
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty{
             accountView
@@ -22,19 +27,15 @@ struct MainView: View {
     @ViewBuilder
     var accountView: some View {
         TabView {
-            MapView(userId: viewModel.currentUserId)
-                .tabItem{
-                    Label("Home", systemImage: "house")
-                }
             MapTrackingView().tabItem { Label("Map", systemImage: "map.circle") }
+            RunDashboardView()
+                            .tabItem {
+                                Image("RunButton")
+                            }
             ProfileView()
                 .tabItem {
                     Label("You", systemImage: "person.circle")
                 }
         }
     }
-}
-
-#Preview {
-    MainView()
 }
