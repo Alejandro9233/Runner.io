@@ -26,9 +26,10 @@ struct MainView: View {
                 .tabItem{
                     Label("Home", systemImage: "house")
                 }
+            MapTrackingView().tabItem { Label("Map", systemImage: "map.circle") }
             ProfileView()
                 .tabItem {
-                    Label("Profile", systemImage: "person.circle")
+                    Label("You", systemImage: "person.circle")
                 }
         }
     }

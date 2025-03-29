@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FAE185B82D97638200C7CC50 /* MapTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185B72D97638200C7CC50 /* MapTrackingView.swift */; };
+		FAE185BA2D97639400C7CC50 /* MapRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185B92D97639400C7CC50 /* MapRouteView.swift */; };
+		FAE185BC2D9763B600C7CC50 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185BB2D9763B600C7CC50 /* LocationManager.swift */; };
+		FAE185BE2D9763E200C7CC50 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185BD2D9763E200C7CC50 /* Route.swift */; };
+		FAE185C02D9766BD00C7CC50 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185BF2D9766BD00C7CC50 /* LocationService.swift */; };
+		FAE185C22D97692900C7CC50 /* PolygonMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185C12D97692900C7CC50 /* PolygonMapView.swift */; };
+		FAE185C52D976BFB00C7CC50 /* PolygonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185C42D976BFB00C7CC50 /* PolygonHelper.swift */; };
 		FAF37BD02D3DA3EC0078F8ED /* Runner_ioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF37BCF2D3DA3EC0078F8ED /* Runner_ioApp.swift */; };
 		FAF37BD22D3DA3EC0078F8ED /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF37BD12D3DA3EC0078F8ED /* MainView.swift */; };
 		FAF37BD42D3DA3ED0078F8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAF37BD32D3DA3ED0078F8ED /* Assets.xcassets */; };
@@ -32,6 +39,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FAE185B72D97638200C7CC50 /* MapTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTrackingView.swift; sourceTree = "<group>"; };
+		FAE185B92D97639400C7CC50 /* MapRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRouteView.swift; sourceTree = "<group>"; };
+		FAE185BB2D9763B600C7CC50 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		FAE185BD2D9763E200C7CC50 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		FAE185BF2D9766BD00C7CC50 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		FAE185C12D97692900C7CC50 /* PolygonMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonMapView.swift; sourceTree = "<group>"; };
+		FAE185C42D976BFB00C7CC50 /* PolygonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonHelper.swift; sourceTree = "<group>"; };
 		FAF37BCC2D3DA3EC0078F8ED /* Runner.io.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.io.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF37BCF2D3DA3EC0078F8ED /* Runner_ioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runner_ioApp.swift; sourceTree = "<group>"; };
 		FAF37BD12D3DA3EC0078F8ED /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -69,6 +83,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FAE185C32D976BEE00C7CC50 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FAE185C42D976BFB00C7CC50 /* PolygonHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		FAF37BC32D3DA3EC0078F8ED = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +111,7 @@
 		FAF37BCE2D3DA3EC0078F8ED /* Runner.io */ = {
 			isa = PBXGroup;
 			children = (
+				FAE185C32D976BEE00C7CC50 /* Helpers */,
 				FAF37BE12D3DA5030078F8ED /* Views */,
 				FAF37BE22D3DA5160078F8ED /* ViewModels */,
 				FAF37C032D4AF4510078F8ED /* Services */,
@@ -122,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				FAF37C0A2D4AF5070078F8ED /* User.swift */,
+				FAE185BD2D9763E200C7CC50 /* Route.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -133,6 +157,9 @@
 				FAF37BF52D3DBB5E0078F8ED /* LoginView.swift */,
 				FAF37BF72D3DBB840078F8ED /* MapView.swift */,
 				FAF37BF92D3DBB950078F8ED /* ProfileView.swift */,
+				FAE185B72D97638200C7CC50 /* MapTrackingView.swift */,
+				FAE185B92D97639400C7CC50 /* MapRouteView.swift */,
+				FAE185C12D97692900C7CC50 /* PolygonMapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -142,6 +169,7 @@
 			children = (
 				FAF37BF32D3DBB240078F8ED /* MainViewViewModel.swift */,
 				FAF37C042D4AF4BB0078F8ED /* AuthViewModel.swift */,
+				FAE185BB2D9763B600C7CC50 /* LocationManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -151,6 +179,7 @@
 			children = (
 				FAF37C062D4AF4D20078F8ED /* AuthService.swift */,
 				FAF37C082D4AF4F90078F8ED /* GoogleSignInService.swift */,
+				FAE185BF2D9766BD00C7CC50 /* LocationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -241,16 +270,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAE185C22D97692900C7CC50 /* PolygonMapView.swift in Sources */,
 				FAF37BD22D3DA3EC0078F8ED /* MainView.swift in Sources */,
+				FAE185BA2D97639400C7CC50 /* MapRouteView.swift in Sources */,
 				FAF37BD02D3DA3EC0078F8ED /* Runner_ioApp.swift in Sources */,
 				FAF37BF82D3DBB840078F8ED /* MapView.swift in Sources */,
+				FAE185B82D97638200C7CC50 /* MapTrackingView.swift in Sources */,
+				FAE185BE2D9763E200C7CC50 /* Route.swift in Sources */,
 				FAF37C052D4AF4BB0078F8ED /* AuthViewModel.swift in Sources */,
+				FAE185C02D9766BD00C7CC50 /* LocationService.swift in Sources */,
 				FAF37BF62D3DBB5E0078F8ED /* LoginView.swift in Sources */,
 				FAF37C092D4AF4F90078F8ED /* GoogleSignInService.swift in Sources */,
 				FAF37BFA2D3DBB950078F8ED /* ProfileView.swift in Sources */,
 				FAF37BF42D3DBB240078F8ED /* MainViewViewModel.swift in Sources */,
 				FAF37C0B2D4AF5070078F8ED /* User.swift in Sources */,
+				FAE185C52D976BFB00C7CC50 /* PolygonHelper.swift in Sources */,
 				FAF37C072D4AF4D20078F8ED /* AuthService.swift in Sources */,
+				FAE185BC2D9763B600C7CC50 /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
