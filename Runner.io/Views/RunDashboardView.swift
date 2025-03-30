@@ -66,7 +66,7 @@ struct RunDashboardView: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(isTracking ? Color.red : Color.green)
+                            .background(isTracking ? Color.red : Color(red: 0.20784313725490197, green: 0.25098039215686274, blue: 0.7450980392156863))
                             .cornerRadius(10)
                     }
                     .accessibilityLabel(isTracking ? "Stop tracking your run" : "Start tracking your run")
