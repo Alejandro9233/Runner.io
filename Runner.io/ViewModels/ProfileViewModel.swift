@@ -56,31 +56,34 @@ class ProfileViewModel: ObservableObject {
 
     // MARK: - Fetch Routes
     private func fetchRoutes(userId: String) {
-        db.collection("users").document(userId).collection("routes").getDocuments { [weak self] snapshot, error in
-            if let error = error {
-                print("Error fetching routes: \(error.localizedDescription)")
+        // Fetch routes from the top-level "routes" collection and filter by userId
+        db.collection("routes")
+            .whereField("userId", isEqualTo: userId) // Filter routes by the current user's ID
+            .getDocuments { [weak self] snapshot, error in
+                if let error = error {
+                    print("Error fetching routes: \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        self?.isLoading = false
+                    }
+                    return
+                }
+
+                guard let documents = snapshot?.documents else {
+                    DispatchQueue.main.async {
+                        self?.routes = []
+                        self?.isLoading = false
+                    }
+                    return
+                }
+
+                let fetchedRoutes = documents.compactMap { document -> Route? in
+                    try? document.data(as: Route.self)
+                }
+
                 DispatchQueue.main.async {
+                    self?.routes = fetchedRoutes
                     self?.isLoading = false
                 }
-                return
             }
-
-            guard let documents = snapshot?.documents else {
-                DispatchQueue.main.async {
-                    self?.routes = []
-                    self?.isLoading = false
-                }
-                return
-            }
-
-            let fetchedRoutes = documents.compactMap { document -> Route? in
-                try? document.data(as: Route.self)
-            }
-
-            DispatchQueue.main.async {
-                self?.routes = fetchedRoutes
-                self?.isLoading = false
-            }
-        }
     }
 }
