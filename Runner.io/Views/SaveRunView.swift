@@ -165,6 +165,7 @@ struct SaveRunView: View {
         // Crear un objeto Route a partir de los datos de la carrera
         let route = Route(
             id: UUID(),
+            userId: authService.currentUserId,
             name: routeName,
             startTime: startTime,
             endTime: endTime,

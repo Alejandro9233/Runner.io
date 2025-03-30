@@ -10,23 +10,22 @@ import MapKit
 
 struct MapTrackingView: View {
     @StateObject var locationManager = LocationManager()
+    @StateObject var routeVM = MapRouteViewModel() // ViewModel to fetch routes
     @State private var userTrackingMode: MapUserTrackingMode = .follow
     @State private var isPolygonCompleted = false // Tracks if the polygon is completed
-    @State private var fetchedRoutes: [Route] = [] 
     
     var body: some View {
         ZStack(alignment: .topLeading) {
+            // Map with route and polygons
             MapRouteView(locationManager: locationManager,
                          isPolygonCompleted: $isPolygonCompleted,
-                         fetchedRoutes: fetchedRoutes) // Se pasa el array de rutas
+                         fetchedRoutes: routeVM.fetchedRoutes) // Pass fetched routes
                 .edgesIgnoringSafeArea(.all)
             
-            // VStack for buttons
+            // Buttons for ranking and team views
             VStack(alignment: .center) {
-                // Button to view ranking table
-                VStack{
+                VStack {
                     Button(action: {
-                        // Action to view ranking table
                         print("View Ranking Table")
                     }) {
                         Image(systemName: "medal.star.fill")
@@ -34,17 +33,17 @@ struct MapTrackingView: View {
                             .font(.title)
                     }
                     .frame(width: 40, height: 40)
-                    .background(Color(hex: "#F27D23")) // Background color for the button
+                    .background(Color(hex: "#F27D23"))
                     .cornerRadius(8)
                     Text("Ranking")
                         .font(.caption)
                         .foregroundColor(Color(hex: "#F27D23"))
                 }
-                .padding(.top) // Add some space from the top
+                .padding(.top)
                 
-                VStack{
+                VStack {
                     Button(action: {
-                        print("View Ranking Table")
+                        print("View Team")
                     }) {
                         Image(systemName: "house.lodge.circle")
                             .foregroundColor(Color.white)
@@ -65,10 +64,7 @@ struct MapTrackingView: View {
             .shadow(radius: 5)
         }
         .onAppear {
-            // Lógica para cargar rutas, por ejemplo:
-            FirestoreManager.fetchRoutes { routes in
-                self.fetchedRoutes = routes
-            }
+            routeVM.fetchRoutes() // Fetch routes when the view appears
         }
     }
 }

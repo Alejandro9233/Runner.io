@@ -9,11 +9,11 @@ import FirebaseFirestore
 
 class FirestoreManager {
     private static let db = Firestore.firestore()
-
+    
     // Save a route to Firestore
     static func saveRoute(userId: String, route: Route, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            let routeRef = db.collection("users").document(userId).collection("routes").document(route.id.uuidString)
+            let routeRef = db.collection("routes").document(route.id.uuidString) // Save in top-level "routes"
             try routeRef.setData(from: route) { error in
                 if let error = error {
                     completion(.failure(error))
@@ -26,10 +26,11 @@ class FirestoreManager {
         }
     }
 
+    
     // Fetch Routes
-static func fetchRoutes(forUser userId: String? = nil, completion: @escaping ([Route]) -> Void) {
+    static func fetchRoutes(forUser userId: String? = nil, completion: @escaping ([Route]) -> Void) {
         let db = Firestore.firestore()
-        var query: Query = db.collection("routes")
+        var query: Query = db.collection("routes") // Fetch from top-level "routes" collection
         
         if let userId = userId {
             query = query.whereField("userId", isEqualTo: userId)
@@ -46,4 +47,5 @@ static func fetchRoutes(forUser userId: String? = nil, completion: @escaping ([R
             completion(routes)
         }
     }
+    
 }
