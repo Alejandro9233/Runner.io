@@ -25,7 +25,7 @@ struct RunRowView: View {
                         .font(.caption)
                 }
                 VStack(alignment: .leading, spacing: -2) {
-                    Text("\(String(format: "%.2f", route.totalDistance))")
+                    Text("03:53 min/km")
                     Text("Avg. Pace")
                         .font(.caption)
                 }
