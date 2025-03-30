@@ -23,7 +23,7 @@ struct UserInfoView: View {
             HStack {
                 Image(systemName: "calendar")
                     .foregroundColor(.blue)
-                Text("Member since: January 2025") // Replace with dynamic data if available
+                Text("Member since: January 2025")
                     .font(.subheadline)
             }
         }

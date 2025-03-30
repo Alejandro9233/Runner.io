@@ -18,14 +18,16 @@ struct RunDashboardView: View {
     @State private var currentTime: Date = Date()
     
     @State private var showSaveRunView = false // Trigger for navigation
-
+    @State private var fetchedRoutes: [Route] = []
+    
     var body: some View {
         NavigationView {
             ZStack {
-                // Map with route and polygon
-                MapRouteView(locationManager: locationManager, isPolygonCompleted: $isPolygonCompleted)
-                    .edgesIgnoringSafeArea(.all)
-
+                MapRouteView(locationManager: locationManager,
+                             isPolygonCompleted: $isPolygonCompleted,
+                             fetchedRoutes: fetchedRoutes) // Se pasa el array de rutas
+                .edgesIgnoringSafeArea(.all)
+                
                 VStack {
                     // Activity Dashboard
                     VStack(spacing: 16) {
@@ -44,7 +46,7 @@ struct RunDashboardView: View {
                             Spacer()
                             VStack {
                                 Text("Pace")
-                                Text(String(format: "%.2f min/km", pace))
+                                Text(formattedPace())
                                     .font(.headline)
                             }
                         }
@@ -54,9 +56,9 @@ struct RunDashboardView: View {
                     .cornerRadius(10)
                     .shadow(radius: 5)
                     .padding()
-
+                    
                     Spacer()
-
+                    
                     // Run Button
                     Button(action: toggleTracking) {
                         Text(isTracking ? "Stop Run" : "Start Run")
@@ -69,7 +71,7 @@ struct RunDashboardView: View {
                     }
                     .accessibilityLabel(isTracking ? "Stop tracking your run" : "Start tracking your run")
                     .padding()
-
+                    
                     // NavigationLink to SaveRunView
                     NavigationLink(
                         destination: SaveRunView(
@@ -77,7 +79,12 @@ struct RunDashboardView: View {
                             endTime: currentTime,
                             totalDistance: distance,
                             locations: locationManager.locations
-                        ),
+                        )
+                        .onDisappear {
+                            // Cuando se regrese de SaveRunView, reiniciamos las estadísticas
+                            resetRunState()
+                            // Aquí se podría agregar lógica para cambiar la pestaña a "Map"
+                        },
                         isActive: $showSaveRunView
                     ) {
                         EmptyView()
@@ -92,16 +99,16 @@ struct RunDashboardView: View {
             }
         }
     }
-
+    
     // Toggle tracking state
     private func toggleTracking() {
         if isTracking {
             // Stop tracking
             isTracking = false
-            locationManager.stopTracking() // Correct method call
+            locationManager.stopRun() // Ahora se detiene la carrera (isRunning = false)
             timer?.invalidate()
             timer = nil
-
+            
             // Show SaveRunView
             showSaveRunView = true
         } else {
@@ -110,7 +117,7 @@ struct RunDashboardView: View {
             startTime = Date()
             distance = 0.0
             pace = 0.0
-            locationManager.startTracking() // Correct method call
+            locationManager.startRun() // Ahora se inicia la carrera (isRunning = true)
             
             // Start the timer
             timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
@@ -118,7 +125,7 @@ struct RunDashboardView: View {
             }
         }
     }
-
+    
     // Calculate elapsed time
     private func elapsedTime() -> String {
         guard let startTime = startTime, isTracking else { return "00:00" }
@@ -134,14 +141,29 @@ struct RunDashboardView: View {
            let last = locationManager.locations.suffix(2).last {
             let lastDistance = first.distance(from: last)
             distance += lastDistance
-
+            
             if let startTime = startTime {
                 let elapsedTime = Date().timeIntervalSince(startTime) / 60 // Time in minutes
-                pace = elapsedTime > 0 ? (distance / 1000) / elapsedTime : 0.0 // Pace in min/km
+                pace = elapsedTime > 0 ? elapsedTime / (distance / 1000) : 0.0 // Pace in min/km
             }
-
+            
             // Check if the polygon is completed
             isPolygonCompleted = locationManager.isPolygonClosed()
         }
+    }
+    
+    private func resetRunState() {
+        // Reiniciamos los estados y estadísticas de la carrera
+        startTime = nil
+        distance = 0.0
+        pace = 0.0
+        isPolygonCompleted = false
+        locationManager.locations.removeAll()
+    }
+    private func formattedPace() -> String {
+        guard pace > 0 else { return "00:00 min/km" }
+        let mins = Int(pace)
+        let secs = Int((pace - Double(mins)) * 60)
+        return String(format: "%02d:%02d min/km", mins, secs)
     }
 }

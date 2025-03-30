@@ -2,7 +2,7 @@
 //  MapTrackingView.swift
 //  Runner.io
 //
-//  Created by Alejandro  on 28/03/25.
+//  Created by Alejandro on 28/03/25.
 //
 
 import SwiftUI
@@ -12,28 +12,62 @@ struct MapTrackingView: View {
     @StateObject var locationManager = LocationManager()
     @State private var userTrackingMode: MapUserTrackingMode = .follow
     @State private var isPolygonCompleted = false // Tracks if the polygon is completed
-
+    @State private var fetchedRoutes: [Route] = [] 
+    
     var body: some View {
-        ZStack {
-            // Map with route and polygon
-            MapRouteView(locationManager: locationManager, isPolygonCompleted: $isPolygonCompleted)
+        ZStack(alignment: .topLeading) {
+            MapRouteView(locationManager: locationManager,
+                         isPolygonCompleted: $isPolygonCompleted,
+                         fetchedRoutes: fetchedRoutes) // Se pasa el array de rutas
                 .edgesIgnoringSafeArea(.all)
-
-            // User's current coordinates displayed at the top-right corner
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    VStack(alignment: .trailing) {
-                        Text("Latitude: \(locationManager.userLocation?.coordinate.latitude ?? 0.0, specifier: "%.6f")")
-                        Text("Longitude: \(locationManager.userLocation?.coordinate.longitude ?? 0.0, specifier: "%.6f")")
+            
+            // VStack for buttons
+            VStack(alignment: .center) {
+                // Button to view ranking table
+                VStack{
+                    Button(action: {
+                        // Action to view ranking table
+                        print("View Ranking Table")
+                    }) {
+                        Image(systemName: "medal.star.fill")
+                            .foregroundColor(Color.white)
+                            .font(.title)
                     }
-                    .padding()
-                    .background(Color.white.opacity(0.8))
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
+                    .frame(width: 40, height: 40)
+                    .background(Color(hex: "#F27D23")) // Background color for the button
+                    .cornerRadius(8)
+                    Text("Ranking")
+                        .font(.caption)
+                        .foregroundColor(Color(hex: "#F27D23"))
                 }
-                .padding()
+                .padding(.top) // Add some space from the top
+                
+                VStack{
+                    Button(action: {
+                        print("View Ranking Table")
+                    }) {
+                        Image(systemName: "house.lodge.circle")
+                            .foregroundColor(Color.white)
+                            .font(.title)
+                    }
+                    .frame(width: 40, height: 40)
+                    .background(Color(hex: "#3140C2"))
+                    .cornerRadius(8)
+                    Text("Team")
+                        .font(.caption)
+                        .foregroundColor(Color(hex: "#3140C2"))
+                }
+                .padding(.top, 8)
+            }
+            .padding(15)
+            .background(Color.white.opacity(0.5))
+            .cornerRadius(8)
+            .shadow(radius: 5)
+        }
+        .onAppear {
+            // Lógica para cargar rutas, por ejemplo:
+            FirestoreManager.fetchRoutes { routes in
+                self.fetchedRoutes = routes
             }
         }
     }

@@ -9,4 +9,8 @@ build/
 *.perspectivev3
 # Xcode User Interface State
 *.xcuserstate
+# Xcode User Data
+*.xcuserdatad/
 
+# macOS
+.DS_Store

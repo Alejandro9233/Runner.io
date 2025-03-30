@@ -2,6 +2,8 @@
 //  FirestoreManager.swift
 //  Runner.io
 //
+//  Created by Alejandro on 28/03/25.
+//
 
 import FirebaseFirestore
 
@@ -25,22 +27,23 @@ class FirestoreManager {
     }
 
     // Fetch Routes
-    static func fetchRoutes(userId: String, completion: @escaping (Result<[Route], Error>) -> Void) {
-        db.collection("users").document(userId).collection("routes").getDocuments { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
+static func fetchRoutes(forUser userId: String? = nil, completion: @escaping ([Route]) -> Void) {
+        let db = Firestore.firestore()
+        var query: Query = db.collection("routes")
+        
+        if let userId = userId {
+            query = query.whereField("userId", isEqualTo: userId)
+        }
+        
+        query.getDocuments { snapshot, error in
+            guard let documents = snapshot?.documents, error == nil else {
+                print("Error fetching routes: \(error?.localizedDescription ?? "unknown error")")
+                completion([])
                 return
             }
-
-            guard let documents = snapshot?.documents else {
-                completion(.success([]))
-                return
-            }
-
-            let routes = documents.compactMap { document -> Route? in
-                try? document.data(as: Route.self)
-            }
-            completion(.success(routes))
+            
+            let routes = documents.compactMap { try? $0.data(as: Route.self) }
+            completion(routes)
         }
     }
 }

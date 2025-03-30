@@ -2,7 +2,7 @@
 //  MainView.swift
 //  Runner.io
 //
-//  Created by Alejandro  on 19/01/25.
+//  Created by Alejandro on 28/03/25.
 //
 
 import SwiftUI
@@ -27,14 +27,14 @@ struct MainView: View {
     @ViewBuilder
     var accountView: some View {
         TabView {
-            MapTrackingView().tabItem { Label("Map", systemImage: "map.circle") }
+            MapTrackingView().tabItem { Label("Map", systemImage: "globe.americas") }
             RunDashboardView()
-                            .tabItem {
-                                Image("RunButton")
-                            }
+                .tabItem {
+                    Label("Run", systemImage: "figure.run")
+                }
             ProfileView()
                 .tabItem {
-                    Label("You", systemImage: "person.circle")
+                    Label("You", systemImage: "person")
                 }
         }
     }
