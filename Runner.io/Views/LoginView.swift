@@ -39,7 +39,7 @@ struct LoginView: View {
                     // Card background
                     RoundedRectangle(cornerRadius: 30)
                         .fill(Color.white.opacity(0.2))
-                        .frame(width: 380, height: 400)
+                        .frame(width: 350, height: 490)
                         .padding(.horizontal, 0)
                     
                     VStack(spacing: 10) {
@@ -51,7 +51,7 @@ struct LoginView: View {
                                    .foregroundColor(.white)
                                    .multilineTextAlignment(.leading)
                                    .lineLimit(nil) // This ensures the text wraps instead of getting cut off
-                                   .padding(.leading, 30)
+                                   .padding(.leading, 50)
                                    .padding(.top, 40)
                                
                                Spacer()
@@ -60,9 +60,9 @@ struct LoginView: View {
                                Image("globe_image")
                                    .resizable()
                                    .aspectRatio(contentMode: .fit)
-                                   .frame(width: 180, height: 180)
-                                   .padding(.trailing, 30)
-                                   .shadow(color: .black, radius: 3, x: -5, y: 5) 
+                                   .frame(width: 150, height: 150)
+                                   .padding(.trailing, 50)
+                                   .shadow(color: .black, radius: 3, x: -5, y: 5)
                            }
                         .padding(.top, 40)
                         
