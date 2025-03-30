@@ -25,7 +25,7 @@ struct RunRowView: View {
                         .font(.caption)
                 }
                 VStack(alignment: .leading, spacing: -2) {
-                    Text("03:53 min/km")
+                    Text(averagePace)
                     Text("Avg. Pace")
                         .font(.caption)
                 }
@@ -39,6 +39,7 @@ struct RunRowView: View {
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 10).fill(Color(.white)))
+
     }
 
     private func formattedDate(_ date: Date) -> String {
@@ -46,6 +47,17 @@ struct RunRowView: View {
         formatter.dateStyle = .medium
         return formatter.string(from: date)
     }
+    
+    // Calcular el pace promedio en min/km
+    private var averagePace: String {
+        guard route.totalDistance > 0 else { return "00:00 min/km" }
+        let elapsedMinutes = route.endTime.timeIntervalSince(route.startTime) / 60.0
+        let pace = elapsedMinutes / route.totalDistance // totalDistance is in km
+        let mins = Int(pace)
+        let secs = Int((pace - Double(mins)) * 60)
+        return String(format: "%02d:%02d min/km", mins, secs)
+    }
+
 }
 
 func formattedDuration(start: Date, end: Date) -> String {
@@ -59,6 +71,8 @@ func formattedDuration(start: Date, end: Date) -> String {
         return "\(minutes)m"
     }
 }
+
+
 
 
 #Preview {
