@@ -10,21 +10,29 @@ struct ProfileHeaderView: View {
     let userEmail: String
 
     var body: some View {
-        VStack {
+        HStack(spacing: 40) {
+            
             Image(systemName: "person.crop.circle.fill")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 100, height: 100)
+                .frame(width: 60, height: 60)
                 .foregroundColor(.blue)
-                .padding(.bottom, 10)
-
-            Text(userName)
-                .font(.title)
-                .fontWeight(.bold)
-
-            Text(userEmail)
-                .font(.subheadline)
-                .foregroundColor(.gray)
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text(userName)
+                    .font(.title)
+                    .fontWeight(.bold)
+                Text(userEmail)
+                    .font(.subheadline)
+                .foregroundColor(.gray)}
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background((Color(.white)))
         }
     }
+
+
+#Preview {
+    ProfileHeaderView(userName: "John Doe", userEmail: "johndoe@example.com")
 }

@@ -10,24 +10,33 @@ struct UserInfoView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Account Information")
+            Text("Statistics")
                 .font(.headline)
-
-            HStack {
-                Image(systemName: "envelope.fill")
-                    .foregroundColor(.blue)
-                Text(userEmail)
-                    .font(.subheadline)
-            }
-
-            HStack {
-                Image(systemName: "calendar")
-                    .foregroundColor(.blue)
-                Text("Member since: January 2025")
-                    .font(.subheadline)
+            
+            HStack(spacing: 40) {
+                VStack(spacing: -2) {
+                    Text("2.33")
+                    Text("Kilometers")
+                        .font(.caption)
+                }
+                VStack(spacing: -2) {
+                    Text("10.5k")
+                    Text("Calories")
+                        .font(.caption)
+                }
+                VStack(spacing: -2) {
+                    Text("32km")
+                    Text("Territory")
+                        .font(.caption)
+                }
             }
         }
         .padding()
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color(.systemGray6)))
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background((Color(.white)))
+
     }
+}
+#Preview {
+    UserInfoView(userEmail: "anapfigueroatgmail.com")
 }

@@ -10,27 +10,37 @@ struct ProfileView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    if viewModel.isLoading {
-                        ProgressView("Loading...")
+            ZStack {
+                Color(.systemGray6) // Full background color
+                    .ignoresSafeArea() // Fill entire screen
+
+                ScrollView {
+                    VStack(spacing: 20) {
+                        if viewModel.isLoading {
+                            ProgressView("Loading...")
+                                .padding()
+                        } else {
+                            VStack {
+                                ProfileHeaderView(userName: viewModel.userName, userEmail: viewModel.userEmail)
+                                UserInfoView(userEmail: viewModel.userEmail)
+                            }
                             .padding()
-                    } else {
-                        ProfileHeaderView(userName: viewModel.userName, userEmail: viewModel.userEmail)
-                        UserInfoView(userEmail: viewModel.userEmail)
-                        SavedRunsView(routes: viewModel.routes)
-                        SignOutButtonView()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background((Color(.white)))}
+                        
+                            SavedRunsView(routes: viewModel.routes)
+                            Spacer()
+                            SignOutButtonView()
+                        }
                     }
                 }
-                .padding()
-                .navigationTitle("Profile")
                 .navigationBarTitleDisplayMode(.inline)
-            }
-            .onAppear {
-                // Replace this with the actual user ID from your auth service
-                let userId = AuthService.shared.currentUserId
-                viewModel.fetchUserData(userId: userId)
+                .onAppear {
+                    let userId = AuthService.shared.currentUserId
+                    viewModel.fetchUserData(userId: userId)
+                }
             }
         }
     }
-}
+
+    

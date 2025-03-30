@@ -10,7 +10,7 @@ struct SavedRunsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Your Runs")
+            Text("Recent Activity")
                 .font(.headline)
 
             if routes.isEmpty {

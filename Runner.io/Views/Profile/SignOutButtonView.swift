@@ -14,11 +14,12 @@ struct SignOutButtonView: View {
                 .font(.headline)
                 .foregroundColor(.white)
                 .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.red)
+                .frame(width: 200)
+                .background(Color(red: 0.93, green: 0.52, blue: 0.25))
                 .cornerRadius(10)
         }
     }
+        
 
     private func signOut() {
         AuthService.shared.signOut { result in
