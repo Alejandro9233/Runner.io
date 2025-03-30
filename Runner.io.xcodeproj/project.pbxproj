@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA3685252D991AD100130CA7 /* MapRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3685242D991AD100130CA7 /* MapRouteViewModel.swift */; };
 		FAE185B82D97638200C7CC50 /* MapTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185B72D97638200C7CC50 /* MapTrackingView.swift */; };
 		FAE185BA2D97639400C7CC50 /* MapRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185B92D97639400C7CC50 /* MapRouteView.swift */; };
 		FAE185BC2D9763B600C7CC50 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE185BB2D9763B600C7CC50 /* LocationManager.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FA3685242D991AD100130CA7 /* MapRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRouteViewModel.swift; sourceTree = "<group>"; };
 		FAE185B72D97638200C7CC50 /* MapTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTrackingView.swift; sourceTree = "<group>"; };
 		FAE185B92D97639400C7CC50 /* MapRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRouteView.swift; sourceTree = "<group>"; };
 		FAE185BB2D9763B600C7CC50 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				FAF37BF32D3DBB240078F8ED /* MainViewViewModel.swift */,
 				FAE185BB2D9763B600C7CC50 /* LocationManager.swift */,
 				FAE185D72D98ABE400C7CC50 /* ProfileViewModel.swift */,
+				FA3685242D991AD100130CA7 /* MapRouteViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				FAF37BF42D3DBB240078F8ED /* MainViewViewModel.swift in Sources */,
 				FAF37C0B2D4AF5070078F8ED /* User.swift in Sources */,
 				FAE185DA2D98C2FE00C7CC50 /* ColorHelper.swift in Sources */,
+				FA3685252D991AD100130CA7 /* MapRouteViewModel.swift in Sources */,
 				FAE185C52D976BFB00C7CC50 /* PolygonHelper.swift in Sources */,
 				FAF37C072D4AF4D20078F8ED /* AuthService.swift in Sources */,
 				FAE185D22D98A99A00C7CC50 /* SavedRunsView.swift in Sources */,
