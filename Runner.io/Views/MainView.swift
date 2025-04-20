@@ -11,31 +11,36 @@ struct MainView: View {
     @StateObject var viewModel = MainViewViewModel()
     
     init() {
-        UITabBar.appearance().backgroundColor = UIColor.white
-        UITabBar.appearance().isTranslucent = true
+        configureTabBarAppearance()
     }
     
     var body: some View {
-        if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty{
-            accountView
-        } else {
-            LoginView()
+        Group {
+            switch viewModel.authState {
+            case .signedIn:
+                accountView
+            case .signedOut, .unknown:
+                LoginView()
+            }
         }
-        
     }
     
     @ViewBuilder
     var accountView: some View {
         TabView {
-            MapTrackingView().tabItem { Label("Map", systemImage: "globe.americas") }
+            MapTrackingView()
+                .tabItem { Label("Map", systemImage: "globe.americas") }
+            
             RunDashboardView()
-                .tabItem {
-                    Label("Run", systemImage: "figure.run")
-                }
-            ProfileView()
-                .tabItem {
-                    Label("You", systemImage: "person")
-                }
+                .tabItem { Label("Run", systemImage: "figure.run") }
+            
+            ProfileView(signOut: viewModel.signOut)
+                .tabItem { Label("You", systemImage: "person") }
         }
+    }
+    
+    private func configureTabBarAppearance() {
+        UITabBar.appearance().backgroundColor = UIColor.white
+        UITabBar.appearance().isTranslucent = true
     }
 }

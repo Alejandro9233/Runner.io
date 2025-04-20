@@ -5,33 +5,37 @@
 //  Created by Alejandro on 28/03/25.
 //
 
-import FirebaseAuth
+import Foundation
 import Combine
 
 class MainViewViewModel: ObservableObject {
-    @Published var isSignedIn: Bool = false
-    @Published var currentUserId: String = ""
-
-    private var authStateListenerHandle: AuthStateDidChangeListenerHandle?
-
+    @Published var authState: AuthState = .unknown
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     init() {
-        // Start listening for authentication state changes
-        authStateListenerHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            guard let self = self else { return }
-            if let user = user {
-                self.isSignedIn = true
-                self.currentUserId = user.uid
-            } else {
-                self.isSignedIn = false
-                self.currentUserId = ""
+        // Subscribe to auth state changes from AuthService
+        AuthService.shared.$authState
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                self?.authState = state
             }
-        }
+            .store(in: &cancellables)
     }
-
-    deinit {
-        // Remove the listener when the view model is deallocated
-        if let handle = authStateListenerHandle {
-            Auth.auth().removeStateDidChangeListener(handle)
-        }
+    
+    func signOut() {
+        AuthService.shared.signOut()
+            .receive(on: RunLoop.main)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Error signing out: \(error.localizedDescription)")
+                    }
+                },
+                receiveValue: { _ in
+                    print("Successfully signed out")
+                }
+            )
+            .store(in: &cancellables)
     }
 }

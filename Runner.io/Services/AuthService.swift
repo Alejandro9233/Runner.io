@@ -1,149 +1,238 @@
-//
-//  AuthService.swift
-//  Runner.io
-//
-//  Created by Alejandro on 28/03/25.
-//
-
 import Foundation
 import FirebaseAuth
 import GoogleSignIn
 import FirebaseCore
 import FirebaseFirestore
 import UIKit
+import Combine
 
 class AuthService: ObservableObject {
-    @Published var isSignedIn: Bool = false
-    @Published var currentUserId: String = ""
+    // MARK: - Published Properties
+    @Published var authState: AuthState = .unknown
     
-    static let shared = AuthService() // Singleton for global access
-    
-    private let db = Firestore.firestore() // Firestore instance
-    
-    private init() {
-        self.isSignedIn = Auth.auth().currentUser != nil
-        self.currentUserId = Auth.auth().currentUser?.uid ?? ""
+    var currentUserId: String {
+        return Auth.auth().currentUser?.uid ?? ""
     }
     
-    func signInWithGoogle(presentingViewController: UIViewController, completion: @escaping (Result<Void, Error>) -> Void) {
-        // Ensure Firebase is configured
-        guard FirebaseApp.app() != nil else {
-            completion(.failure(NSError(domain: "FirebaseNotConfigured", code: 0, userInfo: nil)))
-            return
+    // MARK: - Private Properties
+    private let db = Firestore.firestore()
+    private var cancellables = Set<AnyCancellable>()
+    private var authStateListener: AuthStateDidChangeListenerHandle?
+    
+
+    
+    // MARK: - Singleton
+    static let shared = AuthService()
+    
+    // MARK: - Lifecycle
+    private init() {
+        setupAuthStateListener()
+    }
+    
+    deinit {
+        removeAuthStateListener()
+    }
+    
+    // MARK: - Auth State Management
+    private func setupAuthStateListener() {
+        authStateListener = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            guard let self = self else { return }
+            
+            if let user = user {
+                self.authState = .signedIn(userId: user.uid)
+            } else {
+                self.authState = .signedOut
+            }
         }
-        
-        // Call Google Sign-In
-        GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signInResult, error in
-            if let error = error {
-                completion(.failure(error))
+    }
+    
+    private func removeAuthStateListener() {
+        if let handle = authStateListener {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
+    }
+    
+    // MARK: - Google Sign In
+    func signInWithGoogle(presentingViewController: UIViewController) -> AnyPublisher<Void, AuthError> {
+        return Future<Void, AuthError> { [weak self] promise in
+            guard let self = self else {
+                promise(.failure(.unknown))
                 return
             }
             
-            guard let result = signInResult,
-                  let idToken = result.user.idToken?.tokenString else {
-                completion(.failure(NSError(domain: "MissingAuthToken", code: 0, userInfo: nil)))
+            // Ensure Firebase is configured
+            guard FirebaseApp.app() != nil else {
+                promise(.failure(.configuration))
                 return
             }
             
-            let accessToken = result.user.accessToken.tokenString
-            
-            // Create Firebase credential
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
-            
-            // Sign in with Firebase
-            Auth.auth().signIn(with: credential) { authResult, error in
+            // Call Google Sign-In
+            GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signInResult, error in
                 if let error = error {
-                    completion(.failure(error))
+                    promise(.failure(.provider(error)))
                     return
                 }
                 
-                DispatchQueue.main.async {
-                    self.isSignedIn = true
-                    self.currentUserId = Auth.auth().currentUser?.uid ?? ""
+                guard let result = signInResult,
+                      let idToken = result.user.idToken?.tokenString else {
+                    promise(.failure(.missingToken))
+                    return
+                }
+                
+                let accessToken = result.user.accessToken.tokenString
+                
+                // Create Firebase credential
+                let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+                
+                // Sign in with Firebase
+                Auth.auth().signIn(with: credential) { authResult, error in
+                    if let error = error {
+                        promise(.failure(.firebase(error)))
+                        return
+                    }
                     
                     // Add or update the user in Firestore
                     if let authResult = authResult {
-                        self.addOrUpdateUserInFirestore(authResult: authResult) { dbResult in
-                            switch dbResult {
-                            case .success:
-                                completion(.success(()))
-                            case .failure(let dbError):
-                                completion(.failure(dbError))
-                            }
-                        }
+                        self.addOrUpdateUserInFirestore(authResult: authResult)
+                            .sink(receiveCompletion: { completion in
+                                if case .failure(let error) = completion {
+                                    promise(.failure(error))
+                                }
+                            }, receiveValue: { _ in
+                                promise(.success(()))
+                            })
+                            .store(in: &self.cancellables)
                     } else {
-                        completion(.failure(NSError(domain: "AuthResultMissing", code: 0, userInfo: nil)))
+                        promise(.failure(.unknown))
                     }
                 }
             }
-        }
+        }.eraseToAnyPublisher()
     }
     
-    // MARK: - Add or Update User in Firestore
-    private func addOrUpdateUserInFirestore(authResult: AuthDataResult, completion: @escaping (Result<Void, Error>) -> Void) {
-        let user = authResult.user // No need for guard let or if let since 'user' is non-optional
-        
-        let userRef = db.collection("users").document(user.uid)
-        
-        // Fetch current user data from Firestore
-        userRef.getDocument { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
+    // MARK: - Firestore User Management
+    private func addOrUpdateUserInFirestore(authResult: AuthDataResult) -> AnyPublisher<Void, AuthError> {
+        return Future<Void, AuthError> { [weak self] promise in
+            guard let self = self else {
+                promise(.failure(.unknown))
                 return
             }
             
-            // If the user already exists, update their data
-            if let snapshot = snapshot, snapshot.exists {
-                userRef.updateData([
-                    "name": user.displayName ?? "Anonymous",
-                    "email": user.email ?? "",
-                    "profileImageUrl": user.photoURL?.absoluteString ?? "",
-                    "updatedAt": FieldValue.serverTimestamp()
-                ]) { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(()))
-                    }
+            let user = authResult.user
+            let userRef = self.db.collection("users").document(user.uid)
+            
+            // Fetch current user data from Firestore
+            userRef.getDocument { snapshot, error in
+                if let error = error {
+                    promise(.failure(.firestore(error)))
+                    return
                 }
-            } else {
-                // If the user doesn't exist, create a new document
-                let newUser = [
-                    "id": user.uid,
-                    "name": user.displayName ?? "Anonymous",
-                    "email": user.email ?? "",
-                    "profileImageUrl": user.photoURL?.absoluteString ?? "",
-                    "totalDistanceRun": 0.0,
-                    "achievements": [],
-                    "friends": [],
-                    "createdAt": FieldValue.serverTimestamp(),
-                    "updatedAt": FieldValue.serverTimestamp()
-                ] as [String : Any]
                 
-                userRef.setData(newUser) { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(()))
+                // If the user already exists, update their data
+                if let snapshot = snapshot, snapshot.exists {
+                    userRef.updateData([
+                        "name": user.displayName ?? "Anonymous",
+                        "email": user.email ?? "",
+                        "profileImageUrl": user.photoURL?.absoluteString ?? "",
+                        "updatedAt": FieldValue.serverTimestamp()
+                    ]) { error in
+                        if let error = error {
+                            promise(.failure(.firestore(error)))
+                        } else {
+                            promise(.success(()))
+                        }
+                    }
+                } else {
+                    // If the user doesn't exist, create a new document
+                    let newUser = [
+                        "id": user.uid,
+                        "name": user.displayName ?? "Anonymous",
+                        "email": user.email ?? "",
+                        "profileImageUrl": user.photoURL?.absoluteString ?? "",
+                        "totalDistanceRun": 0.0,
+                        "achievements": [],
+                        "friends": [],
+                        "createdAt": FieldValue.serverTimestamp(),
+                        "updatedAt": FieldValue.serverTimestamp()
+                    ] as [String : Any]
+                    
+                    userRef.setData(newUser) { error in
+                        if let error = error {
+                            promise(.failure(.firestore(error)))
+                        } else {
+                            promise(.success(()))
+                        }
                     }
                 }
             }
-        }
+        }.eraseToAnyPublisher()
     }
-
     
     // MARK: - Sign Out
-    func signOut(completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            // Sign out from Firebase
-            try Auth.auth().signOut()
+    func signOut() -> AnyPublisher<Void, AuthError> {
+        return Future<Void, AuthError> { promise in
+            do {
+                // Sign out from Firebase
+                try Auth.auth().signOut()
+                
+                // Sign out from Google
+                GIDSignIn.sharedInstance.signOut()
+                
+                promise(.success(()))
+            } catch let signOutError {
+                promise(.failure(.signOut(signOutError)))
+            }
+        }.eraseToAnyPublisher()
+    }
+}
 
-            // Sign out from Google
-            GIDSignIn.sharedInstance.signOut()
+// MARK: - Auth State Enum
+enum AuthState: Equatable {
+    case unknown
+    case signedOut
+    case signedIn(userId: String)
+    
+    var isSignedIn: Bool {
+        if case .signedIn = self {
+            return true
+        }
+        return false
+    }
+    
+    var userId: String {
+        if case .signedIn(let userId) = self {
+            return userId
+        }
+        return ""
+    }
+}
 
-            completion(.success(()))
-        } catch let signOutError {
-            completion(.failure(signOutError))
+// MARK: - Auth Error Enum
+enum AuthError: Error, LocalizedError {
+    case unknown
+    case configuration
+    case missingToken
+    case provider(Error)
+    case firebase(Error)
+    case firestore(Error)
+    case signOut(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .unknown:
+            return "An unknown error occurred"
+        case .configuration:
+            return "Firebase is not properly configured"
+        case .missingToken:
+            return "Authentication token is missing"
+        case .provider(let error):
+            return "Provider error: \(error.localizedDescription)"
+        case .firebase(let error):
+            return "Firebase authentication error: \(error.localizedDescription)"
+        case .firestore(let error):
+            return "Firestore error: \(error.localizedDescription)"
+        case .signOut(let error):
+            return "Sign out error: \(error.localizedDescription)"
         }
     }
 }
